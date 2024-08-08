@@ -36,18 +36,44 @@ public class Owner implements Comparable<Owner> {
         return this.name.compareToIgnoreCase(secondOwner.getName());
     }
 
-    public boolean addDog(Dog dog) {
-        if (dog != null && (dog.getOwner() == null || dog.getOwner() == this) && !dogs.contains(dog))
-            return dogs.add(dog);
+    public boolean addDog(Dog newDog) {
+        if (newDog == null) {
+            return false;
+        } else if (newDog.getOwner() == this) {
+            if (dogs.contains(newDog)) {
+                return false;
+            }
+            dogs.add(newDog);
+            return true;
+        } else if (newDog.getOwner() == null) {
+            newDog.setOwner(this);
+            return true;
+        }
+
+        return false;
+
+    }
+
+    public boolean removeDog(Dog dogToRemove) {
+        if (dogToRemove == null) {
+            return false;
+        }
+
+        for (Dog dog : dogs) {
+            if (dog == dogToRemove) {
+                dogs.remove(dogToRemove);
+                dogToRemove.setOwner(null);
+                return true;
+            }
+        }
         return false;
     }
 
-    public boolean removeDog(Dog dog) {
-        return dogs.remove(dog);
-    }
-
     public ArrayList<Dog> getDogs() {
-        return new ArrayList<>(dogs);
+        ArrayList<Dog> dogsCopy = new ArrayList<>(dogs);
+        DogNameComparator dogNameComparator = new DogNameComparator();
+        DogSorter.sortDogs(dogNameComparator, dogsCopy);
+        return dogsCopy;
     }
 
 }

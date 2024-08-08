@@ -67,20 +67,18 @@ public class Dog {
     }
 
     public boolean setOwner(Owner newOwner) {
-        if (newOwner == null && owner != null) {
-            if(!owner.removeDog(this))
-                System.out.println("ERROR: Could not remove dog from owner");
+        if (owner == null && newOwner != null) {
+            owner = newOwner;
+            newOwner.addDog(this);
+            return true;
+        }  else if (owner != null && newOwner == null) {
+            owner.removeDog(this);
             owner = null;
             return true;
         }
 
-        if (owner == null && newOwner != null) {
-            owner = newOwner;
-            owner.addDog(this);
-            return true;
-        }
-
         return false;
+
     }
 
 

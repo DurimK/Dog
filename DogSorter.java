@@ -5,39 +5,37 @@ import java.util.Comparator;
 
 public class DogSorter {
 
-    public static int sortDogs(Comparator<Dog> comparator, ArrayList<Dog> dog) {
-        int totalSwaps = 0;
-
-        for(int i = 0; i < dog.size(); i++) {
-            int index = nextDog(comparator, dog, i);
-
-            if(index != i) {
-                swapDogs(dog, i, index);
-                totalSwaps++;
+    public static int sortDogs(Comparator<Dog>comparator, ArrayList<Dog> dogs) {
+        int swap = 0;
+        for (int i = 0; i < dogs.size(); i++) {
+            int smallestDog = nextDog(comparator, dogs, i);
+            if (i != smallestDog) {
+                swapDogs(dogs, i, smallestDog);
+                swap++;
             }
         }
-        //return the amount of swaps made.
-        return totalSwaps;
+        return swap;
     }
 
-    private static ArrayList<Dog> swapDogs(ArrayList<Dog> arrayList, int firstIndex, int secondIndex) {
-        Dog tempDog = arrayList.get(firstIndex);
-
-        arrayList.set(firstIndex, arrayList.get(secondIndex));
-        arrayList.set(secondIndex, tempDog);
-
-        return arrayList;
+    private static void swapDogs(ArrayList<Dog> dogs, int a, int b) {
+        Dog temp = dogs.get(a);
+        dogs.set(a, dogs.get(b));
+        dogs.set(b, temp);
     }
 
-    private static int nextDog(Comparator<Dog> comparator, ArrayList<Dog> dog, int startIndex) {
-        int index = startIndex;
+    private static int nextDog(Comparator<Dog> comparator,ArrayList<Dog>dogs, int a) {
+        int currentMinIndex = a;
 
-        for(int i = startIndex + 1; i < dog.size(); i++) {
-            if(comparator.compare(dog.get(i), dog.get(index)) < 0) {
-                index = i;
+        for (int j = a + 1; j < dogs.size(); j++){
+            if (comparator.compare(dogs.get(j), dogs.get(currentMinIndex)) < 0) {
+                currentMinIndex = j;
+
             }
+
         }
-        return index;
+
+        return currentMinIndex;
+
     }
 
 }

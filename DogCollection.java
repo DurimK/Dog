@@ -1,7 +1,6 @@
 //Jonas Levin jole3800
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class DogCollection {
 
@@ -13,7 +12,7 @@ public class DogCollection {
         return dogs.add(dog);
     }
 
-    public boolean removeDog(Dog dog){
+    public boolean removeDog(Dog dog) {
         if(dog != null && containsDog(dog) && dog.getOwner() == null){
             dogs.remove(dog);
             dog.setOwner(null);
@@ -31,33 +30,45 @@ public class DogCollection {
         return false;
     }
 
-    public boolean containsDog(String name){
-        for(Dog dog : dogs) {
-            if(dog.getName().equalsIgnoreCase(name)){
+    public boolean containsDog(String currentDog){
+        currentDog = currentDog.toUpperCase();
+        for (Dog dog : dogs){
+            if (dog.getName().equals(currentDog)){
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    public boolean containsDog(Dog currentDog) {
+        for (Dog dog : dogs){
+            if (dog.getName().equals(currentDog.getName())){
                 return true;
             }
         }
         return false;
-    }
 
-    public boolean containsDog(Dog dog) {
-        if(dog == null) {
-            return false;
-        }
-        return containsDog(dog.getName());
     }
 
     public ArrayList<Dog> getDogs() {
-        ArrayList<Dog> sortedDogs = new ArrayList<>(dogs);
-        DogSorter.sortDogs(new DogNameComparator(), sortedDogs);
-        return sortedDogs;
+        ArrayList<Dog> dogsCopy = new ArrayList<>(dogs);
+        DogNameComparator dogNameComparator = new DogNameComparator();
+        DogSorter.sortDogs(dogNameComparator, dogsCopy);
+        return dogsCopy;
     }
 
-    public Dog getDog(String name) {
-        Optional<Dog> dog = dogs.stream().filter(x -> x.getName().equalsIgnoreCase(name)).findFirst();
-        if (!containsDog(name) || dog.isEmpty())
-            return null;
-        return dog.get();
+    public Dog getDog(String selectedDog) {
+        selectedDog = selectedDog.toUpperCase();
+        for (Dog dog : dogs){
+            if (dog.getName().equals(selectedDog)){
+                return dog;
+            }
+        }
+
+        return null;
+
     }
 
     public ArrayList<Dog> getDogsByTailLength(double d) {
